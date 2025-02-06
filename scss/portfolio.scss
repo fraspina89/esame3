@@ -1,0 +1,159 @@
+@import "variabiliEs";
+
+
+
+
+main {
+    @media only screen and (max-width:768px) {
+        padding: 80px 80px 50px 80px;
+    }
+}
+
+footer {
+    @media only screen and (max-width:768px) {
+        padding: 80px 80px 50px 80px;
+    }
+}
+
+
+h2 {
+    margin-top: 60px;
+    
+
+    @media only screen and (max-width:768px) {
+        margin-left: 100px;
+    }
+
+}
+
+/* WORK */
+.work {
+    display: flex;
+    flex-direction: row;
+    margin-top: 60px;
+
+    @media only screen and (max-width:768px) {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        margin-left: 50px;
+    }
+
+    img {
+        @media only screen and (max-width:768px) {
+            margin-left: 30px;
+            margin-top: 20px;
+        }
+    }
+
+    p {
+        padding: 100px 80px 30px 30px;
+        font-style: $fontport;
+        font-size: large;
+
+        @media only screen and (max-width:768px) {
+            margin-top: 10px;
+            padding: 5px;
+        }
+    }
+}
+
+
+
+
+/* LAVORO */
+.lavoro {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    margin-top: 60px;
+
+    /* IMMAGINE WORK */
+    .immagine {
+        float: right;
+        margin-left: 100px;
+        height: 500px;
+        width: 600px;
+
+        @media only screen and (max-width:768px) {
+            float: inline-start;
+            height: 300px;
+            width: 600px;
+            margin-left: 50px;
+            margin-bottom: 50px;
+        }
+    }
+
+    p {
+        padding: 100px 80px 30px 30px;
+        font-style: $fontport;
+        font-size: large;
+        max-width: 50%;
+
+        @media only screen and (max-width:768px) {
+            margin-left: 200px;
+        }
+    }
+}
+
+.azienda {
+    display: flex;
+    align-items: flex-start;
+    margin-top: -50px;
+
+    @media only screen and (max-width:768px) {
+        margin-top: -100px;
+    }
+}
+
+
+.lavori {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 50px;
+    margin-left: 30px;
+    height: 500px;
+
+    @media only screen and (max-width:768px) {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        height: 1400px;
+    }
+
+    img {
+        height: 200px;
+        width: 200px;
+        border-radius: 50%;
+        margin: 70px;
+        margin-left: 80px;
+
+        @media only screen and (max-width:768px) {
+            margin-left: 250px;
+        }
+    }
+
+    p {
+        color: $coloreMenuhover;
+        font-size: 15px;
+        width: 300px;
+        margin-left: 60px;
+        font-style: $fontport;
+        font-size: large;
+
+        @media only screen and (max-width:768px) {
+            margin-left: 120px;
+        }
+    }
+}
+
+h3 {
+    margin-top: 100px;
+    color: $coloreMenuhover;
+    font-size: 30px;
+
+    @media only screen and (max-width:768px) {
+        margin-left: 100px;
+    }
+}

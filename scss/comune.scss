@@ -1,0 +1,225 @@
+@import "variabiliEs";
+
+/* INTESTAZIONE */
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+
+}
+
+
+body {
+    background-image: url("../img/paper2.jpg");
+
+}
+
+
+h1 {
+    color: $coloreNome;
+
+    @media all and (max-width:768px) {
+        font-size: 20px;
+        margin-left: 5px;
+    }
+}
+
+main,
+footer {
+    padding: 80px 80px 50px 80px;
+
+}
+
+/* FOOTER */
+
+footer {
+    a {
+        color: $coloreFoot;
+        text-decoration: none;
+        font-family: $carattere;
+        font-size: x-large;
+
+        @media all and (max-width:768px) {
+            display: inline;
+            font-size: medium;
+            margin-left: 30px;
+        }
+    }
+}
+
+.privacy {
+    margin-top: 50px;
+
+    li {
+        display: inline;
+        font-size: xx-small;
+        margin-left: 30px;
+
+    }
+}
+
+// MENU //
+nav.menu {
+    position: fixed;
+    background-color: $bgMenu;
+    color: $coloreMenu;
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+
+    @media all and (max-width:768px) {
+        position: fixed;
+        background-color: $bgMenu;
+        color: $coloreMenu;
+        padding: 10px;
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+
+    }
+
+    .logo {
+        margin: 0 70px 0 40px;
+
+        @media all and (max-width:768px) {
+            margin: 0 70px 0 40px;
+        }
+    }
+
+    .label-controllo {
+        @media all and (max-width:768px) {
+            position: fixed;
+            top: 18px;
+            left: 20px;
+            width: 26px;
+            height: 26px;
+            cursor: pointer;
+            z-index: 1;
+
+
+
+
+
+            >span,
+            >span::before,
+            >span::after {
+                position: absolute;
+                width: 20px;
+                height: 2px;
+                background-color: #ffffff;
+                transition-duration: .25s;
+            }
+
+            >span::before {
+                content: '';
+                top: -8px;
+            }
+
+            >span::after {
+                content: '';
+                top: 8px;
+            }
+        }
+    }
+}
+
+/* ul del menu */
+#menu {
+    @media all and (max-width:768px) {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 90%;
+        height: 100%;
+        padding: 80px 0;
+        background-color: $bgMenu;
+        box-shadow: 2px 2px 6px $coloreMenuhover;
+        transition-duration: .25s;
+    }
+}
+
+/* voci menu */
+.vociMenu {
+    @media all and (max-width:768px) {
+        display: block;
+        padding: 12px 24px;
+        color: $coloreMenu;
+        font-size: 1.5rem;
+        font-weight: 600;
+        transition-duration: .25s;
+
+        /* voci menu hover */
+        &:hover {
+            background-color: $hovervoci;
+            color: $coloreMenuhover;
+        }
+    }
+
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style: none;
+    display: inline;
+    margin: 0 40px 0 0;
+}
+
+a {
+    color: $coloreMenu;
+    text-decoration: none;
+
+    &:hover {
+        color: $coloreButtonHover;
+        text-decoration: underline;
+
+    }
+}
+
+
+#controllo {
+    opacity: 0;
+
+    @media all and (max-width:768px) {
+        opacity: 0;
+
+        &:checked {
+            +.label-controllo {
+                >span {
+                    transform: rotate(45deg);
+
+                    &::before {
+                        top: 0;
+                        transform: rotate(0deg);
+                    }
+
+                    &::after {
+                        top: 0;
+                        transform: rotate(90deg);
+                    }
+                }
+            }
+
+            ~#menu {
+                left: 0 !important;
+            }
+        }
+    }
+
+}
+
+
+main {
+    @media all and (max-width:768px) {
+        padding: 60px 0px 0px 0px;
+    }
+}

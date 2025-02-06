@@ -1,0 +1,103 @@
+@import "variabiliEs";
+
+
+
+/* PRESENTAZIONE */
+.presentazione {
+
+    padding: 30px 30px 30px 30px;
+
+    @media only screen and (max-width:768px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h1 {
+        margin: 10px auto 10px auto;
+        text-align: center;
+        color: $coloreMenuhover;
+    }
+
+    p {
+        text-align: center;
+        margin: 10px auto 10px auto;
+        width: 500px;
+        font-style: $fontport;
+        font-size: large;
+    }
+
+    img {
+        margin-left: 180px;
+
+        @media only screen and (max-width:768px) {
+            width: 600px;
+            margin-left: 10px;
+        }
+    }
+}
+
+/* STUDI */
+.studi {
+    display: flex;
+    flex-direction: row;
+    margin-top: 50px;
+    align-items: center;
+
+    @media only screen and (max-width:768px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
+
+/* LAVORI */
+.lavori {
+    border: 2px solid $colorprese;
+    width: 710px;
+    height: 600px;
+
+    img {
+        padding: 40px 10px 30px 90px;
+        margin-left: 30px;
+
+        @media only screen and (max-width:768px) {
+            margin-left: 100px;
+        }
+    }
+
+
+    p {
+        padding: 40px 60px 30px 80px;
+        font-style: $fontport;
+        font-size: large;
+    }
+}
+
+h2 {
+    padding: 10px 0 0 10px;
+}
+
+/* PROGETTI */
+.progetti {
+    border: solid 2px $colorprese;
+    width: 710px;
+    height: 600px;
+
+    img {
+        padding: 40px 10px 30px 80px;
+        margin-left: 40px;
+
+        @media only screen and (max-width:768px) {
+            margin-left: 100px;
+        }
+    }
+
+    p {
+        padding: 40px 60px 30px 80px;
+        font-style: $fontport;
+        font-size: large;
+    }
+}

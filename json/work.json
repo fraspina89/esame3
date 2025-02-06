@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "title": "Lavoro 1",
+        "titolo": "Lavoro 1",
+        "img": "lavori.jpg",
+        "alt": "foto",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.Eum ipsam quod cum laborum veniam <br>inventore, eos numquam eligendi e,Lorem ipsum dolor sit amet consectetur adipisicing elit.Eum ipsam quod cum laborum veniam inventore, eos numquam eligendi e",
+        "data": "DATA INIZIO: GENNAIO-DICEMBRE",
+        "azienda": "PRESSO AZIENDA:........"
+    },
+    {
+        "id": 2,
+        "title": "Lavoro 2",
+        "titolo": "Lavoro 2",
+        "img": "lavori.jpg",
+        "alt": "foto",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.Eum ipsam quod cum laborum veniam inventore, eos numquam eligendi e,Lorem ipsum dolor sit amet consectetur adipisicing elit.Eum ipsam quod cum laborum veniam inventore, eos numquam eligendi e",
+        "data": "DATA INIZIO: GENNAIO-DICEMBRE",
+        "azienda": "PRESSO AZIENDA:........"
+    },
+    {
+        "id": 3,
+        "title": "Lavoro 3",
+        "titolo": "Lavoro 3",
+        "img": "lavori.jpg",
+        "alt": "foto",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.Eum ipsam quod cum laborum veniam inventore, eos numquam eligendi e, Lorem ipsum dolor sit amet consectetur adipisicing elit.Eum ipsam quod cum laborum veniam inventore, eos numquam eligendi e",
+        "data": "DATA INIZIO: GENNAIO-DICEMBRE",
+        "azienda": "PRESSO AZIENDA:........"
+    }
+]
