@@ -13,17 +13,17 @@
 
 
 body {
-    background-image: url("../img/paper2.jpg");
+    background-image: url("../img/sfondoblu.jpg");
 
 }
 
 
 h1 {
-    color: $coloreNome;
+    color: $colorport;
 
     @media all and (max-width:768px) {
         font-size: 20px;
-        margin-left: 5px;
+        margin-left: 20px;
     }
 }
 
@@ -37,7 +37,7 @@ footer {
 
 footer {
     a {
-        color: $coloreFoot;
+        color: $coloreButtonHover;
         text-decoration: none;
         font-family: $carattere;
         font-size: x-large;
@@ -64,7 +64,7 @@ footer {
 // MENU //
 nav.menu {
     position: fixed;
-    background-color: $bgMenu;
+    background-color: $coloreMenuhover;
     color: $coloreMenu;
     padding: 10px;
     width: 100%;

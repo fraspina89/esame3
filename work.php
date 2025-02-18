@@ -12,7 +12,7 @@ $menu = "./json/menu.json";
 $file = "./json/work.json";
 $lav = json_decode(UT::leggiTesto($file));
 
-$selezionato = UT::richiestaHTTP("selezionato");
+// $selezionato = UT::richiestaHTTP("selezionato");
 $idWork = UT::richiestaHTTP("idWork");
 $idWork = ($idWork == null) ? 1 : $idWork;
 
@@ -49,8 +49,16 @@ head('Portfolio'); // richiama funzione head //
             <?php
             foreach ($lav as $lavoro) {
                 if ($idWork == $lavoro->id) {
-                    $tmp = '<div><a href="work.php?idWork=%u&" ><img class="immagine" src="./img/%s" alt="%s"></a><p>%s</p><p>%s</p><p class="azienda">%s</p></div>';
-                    printf($tmp, $lavoro->id, $lavoro->img, $lavoro->alt, $lavoro->description, $lavoro->data, $lavoro->azienda);
+                    $tmp = '
+                    <div>
+                        <a href="work.php?idWork=%u"  >
+                            <img class="immagine" src="./img/%s" alt="%s">
+                        </a>
+                        <p>%s</p>
+                        <p>%s</p>
+                        <p class="azienda">%s</p>
+                    </div>';
+                    printf($tmp, $lavoro->id, $lavoro->img, $lavoro->alt , $lavoro->description, $lavoro->data, $lavoro->azienda);
                 }
             }
             ?>

@@ -16,6 +16,7 @@ head('Presentazione'); // richiama la funzione head //
 ?>
 
 <!-- CSS -->
+
 <link href="./css/index.min.css" rel="stylesheet">
 <link href="./css/comune.min.css" rel="stylesheet">
 
@@ -35,7 +36,7 @@ head('Presentazione'); // richiama la funzione head //
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla dolor dicta officiis,
                 quo nostrum ratione nemo. Enim ipsum error quasi.
                 Cupiditate quia autem molestias nam quisquam consectetur pariatur dolore eaque!</p>
-            <img src="./img/IO.jpg" alt="presentazione" title="presentazione">
+            <img src="./img/IO.jpg" alt="presentazione" title="presentazione" width="600" height="300">
         </div>
 
         <!-- STUDI -->

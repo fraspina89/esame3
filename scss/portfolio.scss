@@ -40,6 +40,8 @@ h2 {
     }
 
     img {
+        height: 300px;
+        width: 500px;
         @media only screen and (max-width:768px) {
             margin-left: 30px;
             margin-top: 20px;
@@ -72,9 +74,9 @@ h2 {
     /* IMMAGINE WORK */
     .immagine {
         float: right;
-        margin-left: 100px;
-        height: 500px;
-        width: 600px;
+        margin-right: 50px;
+        height: 400px;
+        width: 400px;
 
         @media only screen and (max-width:768px) {
             float: inline-start;

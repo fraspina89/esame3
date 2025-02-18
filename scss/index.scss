@@ -1,22 +1,27 @@
 @import "variabiliEs";
 
 
-
 /* PRESENTAZIONE */
 .presentazione {
 
     padding: 30px 30px 30px 30px;
 
-    @media only screen and (max-width:768px) {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    @media screen and (max-width: 768px) {
+        padding: 20px;
     }
+
+
 
     h1 {
         margin: 10px auto 10px auto;
         text-align: center;
         color: $coloreMenuhover;
+
+        @media screen and (max-width: 768px) {
+
+            font-size: 1.8rem;
+        }
+
     }
 
     p {
@@ -25,15 +30,25 @@
         width: 500px;
         font-style: $fontport;
         font-size: large;
+
+        @media screen and (max-width: 768px) {
+            width: 90%;
+            font-size: 1rem;
+            margin: 0 auto;
+        }
+
     }
 
     img {
-        margin-left: 180px;
+        margin-left: 220px;
 
-        @media only screen and (max-width:768px) {
-            width: 600px;
-            margin-left: 10px;
+        @media screen and (max-width: 768px) {
+            width: 80%;
+            margin: 20px auto;
+            display: block;
         }
+
+
     }
 }
 
@@ -44,28 +59,42 @@
     margin-top: 50px;
     align-items: center;
 
-    @media only screen and (max-width:768px) {
-        display: flex;
+    @media screen and (max-width: 768px) {
         flex-direction: column;
         align-items: center;
+        text-align: center;
     }
+
+
 }
 
 
 
 /* LAVORI */
 .lavori {
-    border: 2px solid $colorprese;
+
     width: 710px;
     height: 600px;
+
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        height: auto;
+    }
+
 
     img {
         padding: 40px 10px 30px 90px;
         margin-left: 30px;
 
-        @media only screen and (max-width:768px) {
-            margin-left: 100px;
+        @media screen and (max-width: 768px) {
+            padding: 20px;
+            margin-left: 0;
+            width: 50%;
+            display: block;
+            margin: 0 auto;
         }
+
+
     }
 
 
@@ -73,31 +102,60 @@
         padding: 40px 60px 30px 80px;
         font-style: $fontport;
         font-size: large;
+
+        @media screen and (max-width: 768px) {
+            padding: 20px;
+            font-size: 1rem;
+            text-align: center;
+        }
     }
 }
 
 h2 {
     padding: 10px 0 0 10px;
+
+    @media screen and (max-width: 768px) {
+        text-align: center;
+        padding: 10px 0;
+        font-size: 1.5rem;
+    }
 }
 
 /* PROGETTI */
 .progetti {
-    border: solid 2px $colorprese;
+
     width: 710px;
     height: 600px;
+
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        height: auto;
+    }
 
     img {
         padding: 40px 10px 30px 80px;
         margin-left: 40px;
 
-        @media only screen and (max-width:768px) {
-            margin-left: 100px;
+        @media screen and (max-width: 768px) {
+            padding: 20px;
+            width: 50%;
+            display: block;
+            margin: 0 auto;
+
         }
+
+
     }
 
     p {
         padding: 40px 60px 30px 80px;
         font-style: $fontport;
         font-size: large;
+
+        @media screen and (max-width: 768px) {
+            padding: 20px;
+            font-size: 1rem;
+            text-align: center;
+        }
     }
 }

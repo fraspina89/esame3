@@ -13,7 +13,7 @@ $inviato = ($inviato == null || $inviato != 1) ? false : true;
 
 if ($inviato) {
     $valido = 0;
-    //Recupero i dati
+    // RECUPERO DATI //
 
     $nome = UT::richiestaHTTP("nome");
     $cognome = UT::richiestaHTTP("cognome");
@@ -158,6 +158,7 @@ head('Contatti'); // richiama funzione head //
         <!-- FORM DATI -->
         <?php
         if (!$inviato) {
+            // required
         ?>
             <div class="contatti">
                 <h2>SE DESIDERI ESSERE CONTATTATO</h2>
@@ -165,24 +166,24 @@ head('Contatti'); // richiama funzione head //
                     <fieldset class="card">
                         <legend>contattaci</legend>
 
-                        <label for="nome">nome<span>*</span></label>
-                        <input type="text" id="nome" name="nome" placeholder="nome" required maxlength="25" />
+                        <label for="nome" <?php echo $clsErroreNome; ?>>Nome <span>*</span></label>
+                        <input type="text" id="nome" name="nome" placeholder="nome"  maxlength="25"  value="<?php echo $nome; ?>" />
 
-                        <label for="cognome">cognome<span>*</span></label>
-                        <input type="text" id="cognome" name="cognome" placeholder="cognome" maxlength="25" />
+                        <label for="cognome" <?php echo $clsErroreCognome; ?>>cognome</label>
+                        <input type="text" id="cognome" name="cognome" placeholder="cognome" maxlength="25" value="<?php echo $cognome; ?>" />
 
-                        <label for="email">e-mail<span>*</span></label>
-                        <input type="email" id="email" name="email" placeholder="e-mail" required maxlength="40" minlength="10" />
+                        <label for="email" <?php echo $clsErroreEmail; ?>>E-mail <span>*</span></label>
+                        <input type="email" id="email" name="email" placeholder="e-mail"  maxlength="40" minlength="10" value="<?php echo $email; ?>" />
 
-                        <label fot="argomento">argomento<span>*</span></label>
-                        <select name="argomento" id="argomento" required>
-                            <option value="" selected>seleziona argomento</option>
-                            <option value="1">Interessato</option>
-                            <option value="2">Dubbioso</option>
+                        <label for="argomento" <?php echo $clsErroreArgomento; ?>>Argomento <span>*</span></label>
+                        <select name="argomento" id="argomento" >
+                         <option value="" <?php echo ($argomento == "") ? 'selected' : ''; ?>>Seleziona argomento</option>
+                         <option value="1" <?php echo ($argomento == 1) ? 'selected' : ''; ?>>Interessato</option>
+                         <option value="2" <?php echo ($argomento == 2) ? 'selected' : ''; ?>>Dubbioso</option>
                         </select>
 
-                        <label for="testo">testo<span>*</span></label>
-                        <textarea id="testo" name="testo" placeholder="testo" required maxlength="500"></textarea>
+                        <label for="testo" <?php echo $clsErroreTesto; ?>>Testo <span>*</span></label>
+                        <textarea id="testo" name="testo" placeholder="testo"  maxlength="500"><?php echo $testo; ?></textarea>
 
                         <div><button type="reset" title="clicca per annulare">annulla</button>
                             <button type="submit" title="clicca per accedere">invia</button>
@@ -199,7 +200,9 @@ head('Contatti'); // richiama funzione head //
                 "<strong>Argomento:</strong> %s<br>" .
                 "<strong>Testo:</strong><br>%s<br>";
             $str = sprintf($str, $nome, $cognome, $email, $argomento, $testo);
+            echo '<div class="riepilogo">';
             echo "<h1>Grazie per averci contattato</h1>Ecco il riepilogo dei tuoi dati:<br><br>$str";
+         
 
             $str = str_replace('<br>', chr(10), $str);
 
@@ -212,7 +215,8 @@ head('Contatti'); // richiama funzione head //
                 echo "<br>" . str_repeat("-", 30) . "<br>Modulo inviato correttamente<br>";
             } else {
                 echo "<br>" . str_repeat("-", 30) . "<br>Problema nell'invio del modulo<br>";
-            }
+            }  
+             echo "</div>";
         }
         ?>
     </div>

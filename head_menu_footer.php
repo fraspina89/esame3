@@ -1,3 +1,4 @@
+
 <?php
 
 ini_set("auto_detect_line_endings", true);
@@ -63,11 +64,19 @@ function head($title)
     function lavori($file)
     {
         $lav = json_decode(UT::leggiTesto($file));
-        $selezionato = UT::richiestaHTTP("selezionato");
+        // $selezionato = UT::richiestaHTTP("selezionato");
+
         foreach ($lav as $lavoro) {
-            $n = $lavoro->id;
-            $tmp = '<div><h2>%s</h2><a href="work.php?idWork=%u&selezionato=%u" title="%s"><img src="./img/%s" alt="%s" ></a></div>';
-            printf($tmp, $lavoro->titolo, $lavoro->id, $selezionato, $lavoro->title, $lavoro->img, $lavoro->alt);
+
+
+            $tmp = '<div>
+            <h2>%s</h2>
+              <a href="%s" title="%s">
+                <img src="./img/%s" alt="%s" >
+                 </a>
+                    </div>';
+
+            printf($tmp, $lavoro->titolo, $lavoro->url, $lavoro->title, $lavoro->img, $lavoro->alt);
         }
     }
     ?>

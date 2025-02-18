@@ -1,11 +1,9 @@
 @import "variabiliEs";
 
 
+
 /* FORM */
-form {
-    margin: 0;
-    padding: 20px;
-}
+
 
 fieldset {
     border: none;
@@ -62,9 +60,57 @@ select:focus {
     border-bottom: 1px solid $form;
 }
 
+.errore {
+    color: $form;
+}
+
+
+
+.contatti {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 50px;
+    @media screen and (max-width: 768px){
+        width: 40%;  
+        margin-left: auto;
+        margin-right: auto;
+        flex-direction: column; 
+    }
+
+    h2 {
+        margin-left: 20px;
+        color: $coloreButtonHover;
+        line-height: 1.8;
+        text-align: right;
+        @media screen and (max-width: 768px){
+            text-align: center; 
+            margin-left: 0;
+            color:$coloreMenuhover;
+
+        }
+    }
+
+    form {
+
+        margin-left: 50px;
+        margin-top: 200px;
+        @media screen and (max-width: 768px){
+            width: 100%;  
+            margin-left: 0;
+            margin-top: 100px; 
+        }
+    }
+
+}
+
+
+
 
 
 /* BUTTON */
+
 button {
     margin: 0;
     margin-right: 0%;
@@ -73,98 +119,115 @@ button {
     color: $coloreButton;
     border: 1px solid $coloreBordoButton;
     border-radius: 4px;
-    width: 20%;
+    width: 30%;
     padding: 5px;
-    font-size: 1.5em;
+    font-size: 1.0em;
     float: inline-end;
 
     &:hover {
         background-color: $coloreButtonHover
     }
+
+    
 }
 
+/* FILE TXT */
+
+.riepilogo h1 {
+    margin-bottom: 30px;
+}
+
+.riepilogo {
+
+    max-width: 600px;
+    margin: 200px;
+    padding: 20px;
+
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px $coloreMenuhover;
+    text-align: center;
+}
+
+
+
 /* RIGA FOOTER */
+
+
 .rigaFooter {
     display: flex;
     flex-direction: column;
+    align-items: center;
 
-    @media only screen and (max-width:768px) {
-        display: flex;
-        flex-direction: column;
-    }
-
-    p {
-        font-size: 30px;
-        color: $coloreRigaFoot;
-    }
 }
 
+/* DATI */
 
+.dati {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 90%;
+    max-width: 1000px;
+    gap: 20px;
+    margin-top: 50px;
 
-footer li {
-    margin: 0 auto;
-    list-style: none;
-
-    a {
-        &:hover {
-            color: $coloreButtonHover;
-            text-decoration: underline;
-        }
-    }
-}
-
-/* DATI - CONTATTI */
-
-.dati,
-.contatti {
-    width: 100%;
-    text-align: center;
-    width: 100%;
-    margin-top: 30px;
-    border: $coloreButton 3px solid;
-
-    @media only screen and (max-width:768px) {
-        width: 100%;
-        text-align: center;
-        margin-top: 100px;
-        border: 0;
+    h1 {
+        color: $coloreFoot;
     }
 
     ul {
-        list-style: none;
+        margin-top: 20px;
         padding: 0;
-        margin: 0;
     }
 
+    li {
+        background: none;
+        padding: 10px;
+        border-radius: 0px;
+        box-shadow: none;
+        width: auto;
+        text-align: center;
 
-    a {
+
+    }
+
+    p {
+        font-size: 22px;
+        font-weight: bold;
         color: $coloreFoot;
-        font-family: $carattere;
-        font-size: x-large;
-
+        margin-bottom: 5px;
     }
 
     address {
-        color: $coloreFoot;
-        font-family: $carattere;
-        font-size: x-large;
-
-        a {
-            &:hover {
-                color: $coloreButtonHover;
-                text-decoration: underline;
-            }
-        }
+        font-size: 18px;
+        color: $coloreMenuhover;
+        font-style: normal;
+        margin-bottom: 40px;
     }
 
-    @media only screen and (max-width:768px) {
-        width: 100%;
-        text-align: center;
+    a {
+        color: $coloreMenuhover;
+        font-size: 18px;
+        text-decoration: none;
+
+        &:hover {
+            color: $coloreRigaFoot;
+            text-decoration: underline;
+        }
+
     }
 }
 
-/* CONTATTI */
 
-.contatti h2 {
-    color: $coloreNome;
+
+/* MAPPA */
+
+iframe {
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    height: 300px;
+    border: none;
+    margin-top: 50px;
+    margin-left: 35px;
 }
