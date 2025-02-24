@@ -80,15 +80,15 @@ if ($inviato) {
     $clsErroreTesto = "";
 }
 
+
+$arrCss = [];
+$arrCss[] = "contatti.min.css";
+$strHead = head('contatti', $arrCss); // richiama funzione head //
+echo $strHead;
 ?>
 
-<?php
-head('Contatti'); // richiama funzione head //
-?>
 
-<!-- CSS -->
-<link href="css/contatti.min.css" rel="stylesheet">
-<link href="css/comune.min.css" rel="stylesheet">
+
 
 
 <body>
@@ -96,94 +96,46 @@ head('Contatti'); // richiama funzione head //
     <header>
 
         <?php
-        menu($menu); // Richiama la funzione menu //
+        $strMenu = menu($menu); // richiama funzione menu //
+        echo $strMenu;
+
         ?>
 
     </header>
 
     <main>
         <h1>I AM FRANCESCO SPINAZZOLA</h1>
-    </main>
+ 
 
-    <!-- DATI PERSONALI -->
-    <div class="rigaFooter">
-        <div class="dati">
-            <ul>
-                <li>
-                    <p>vienici a trovare in:</p>
-                    <address>
-                        largo giusti,3 <br> 10100 nichelino (to)<br>italia
-                    </address>
-                    <h1>Indicazione mappa</h1>
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2821.463760144219!2d7.645665275037975!3d44.995203464610405!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47881244e0d5897b%3A0x1b7ab3f8d62eb5eb!2sVia%20Giuseppe%20Giusti%2C%203%2C%2010042%20Nichelino%20TO!5e0!3m2!1sit!2sit!4v1716892363978!5m2!1sit!2sit"
-                        width="400" height="400" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </li>
+    <!-- FORM DATI -->
+    <?php
+    if (!$inviato) {
 
-                <li>
-                    <p>email - telefono:</p>
-                    <address>
-                        <ul>
-                            <li>
-                                <a href="francescospinazzola084@gmail.com"
-                                    title="scrivici una email">francescospinazzola084@gmail.com</a>
-                            </li>
-                            <li>
-                                <a href="tel:3402330981" title="telefonaci"> 3402330981</a>
-                            </li>
-                        </ul>
-                    </address>
-                </li>
-
-                <li>
-                    <p>seguici su:</p>
-                    <address>
-                        <ul>
-                            <li>
-                                <a href="http://www.facebook.com" title="seguici su facebook">facebook</a>
-                            </li>
-                            <li>
-                                <a href="http://www.twitter.com" title="seguici su twitter">twitter</a>
-                            </li>
-                            <li>
-                                <a href="http://wwww.instagram.com" title="seguici su instagram">instagram</a>
-                            </li>
-                        </ul>
-                    </address>
-                </li>
-            </ul>
-        </div>
-
-        <!-- FORM DATI -->
-        <?php
-        if (!$inviato) {
-            // required
-        ?>
+    ?>
+        <div class="contenitore-form-mappa">
             <div class="contatti">
                 <h2>SE DESIDERI ESSERE CONTATTATO</h2>
                 <form action="contatti.php?inviato=1" method="POST" novalidate>
                     <fieldset class="card">
-                        <legend>contattaci</legend>
 
                         <label for="nome" <?php echo $clsErroreNome; ?>>Nome <span>*</span></label>
-                        <input type="text" id="nome" name="nome" placeholder="nome"  maxlength="25"  value="<?php echo $nome; ?>" />
+                        <input type="text" id="nome" name="nome" placeholder="nome" maxlength="25" value="<?php echo $nome; ?>" />
 
-                        <label for="cognome" <?php echo $clsErroreCognome; ?>>cognome</label>
+                        <label for="cognome" <?php echo $clsErroreCognome; ?>>Cognome <span>*</span></label>
                         <input type="text" id="cognome" name="cognome" placeholder="cognome" maxlength="25" value="<?php echo $cognome; ?>" />
 
                         <label for="email" <?php echo $clsErroreEmail; ?>>E-mail <span>*</span></label>
-                        <input type="email" id="email" name="email" placeholder="e-mail"  maxlength="40" minlength="10" value="<?php echo $email; ?>" />
+                        <input type="email" id="email" name="email" placeholder="e-mail" maxlength="40" minlength="10" value="<?php echo $email; ?>" />
 
                         <label for="argomento" <?php echo $clsErroreArgomento; ?>>Argomento <span>*</span></label>
-                        <select name="argomento" id="argomento" >
-                         <option value="" <?php echo ($argomento == "") ? 'selected' : ''; ?>>Seleziona argomento</option>
-                         <option value="1" <?php echo ($argomento == 1) ? 'selected' : ''; ?>>Interessato</option>
-                         <option value="2" <?php echo ($argomento == 2) ? 'selected' : ''; ?>>Dubbioso</option>
+                        <select name="argomento" id="argomento">
+                            <option value="" <?php echo ($argomento == "") ? 'selected' : ''; ?>>Seleziona argomento</option>
+                            <option value="1" <?php echo ($argomento == 1) ? 'selected' : ''; ?>>Interessato</option>
+                            <option value="2" <?php echo ($argomento == 2) ? 'selected' : ''; ?>>Dubbioso</option>
                         </select>
 
                         <label for="testo" <?php echo $clsErroreTesto; ?>>Testo <span>*</span></label>
-                        <textarea id="testo" name="testo" placeholder="testo"  maxlength="500"><?php echo $testo; ?></textarea>
+                        <textarea id="testo" name="testo" placeholder="testo" maxlength="500"><?php echo $testo; ?></textarea>
 
                         <div><button type="reset" title="clicca per annulare">annulla</button>
                             <button type="submit" title="clicca per accedere">invia</button>
@@ -192,52 +144,100 @@ head('Contatti'); // richiama funzione head //
                 </form>
             </div>
         <?php
+    } else {
+        $argomento = ($argomento == 1) ? "Interessato" : "Dubbioso";
+        $str = "<strong>Nome:</strong> %s<br>" .
+            "<strong>Cognome:</strong>: %s<br>" .
+            "<strong>E-Mail:</strong> %s<br>" .
+            "<strong>Argomento:</strong> %s<br>" .
+            "<strong>Testo:</strong><br>%s<br>";
+        $str = sprintf($str, $nome, $cognome, $email, $argomento, $testo);
+        echo '<div class="riepilogo">';
+        echo "<h1>Grazie per averci contattato</h1>Ecco il riepilogo dei tuoi dati:<br><br>$str";
+
+
+        $str = str_replace('<br>', chr(10), $str);
+
+        $file = 'datiUtente.txt';
+
+        $str = str_repeat("-", 30) . chr(10) . $str . chr(10) . str_repeat("-", 30) . chr(10);
+        $rit = UT::scriviTesto($file, $str);
+
+        if ($rit) {
+            echo "<br>" . str_repeat("-", 30) . "<br>Modulo inviato correttamente<br>";
         } else {
-            $argomento = ($argomento == 1) ? "Interessato" : "Dubbioso";
-            $str = "<strong>Nome:</strong> %s<br>" .
-                "<strong>Cognome:</strong>: %s<br>" .
-                "<strong>E-Mail:</strong> %s<br>" .
-                "<strong>Argomento:</strong> %s<br>" .
-                "<strong>Testo:</strong><br>%s<br>";
-            $str = sprintf($str, $nome, $cognome, $email, $argomento, $testo);
-            echo '<div class="riepilogo">';
-            echo "<h1>Grazie per averci contattato</h1>Ecco il riepilogo dei tuoi dati:<br><br>$str";
-         
-
-            $str = str_replace('<br>', chr(10), $str);
-
-            $file = 'datiUtente.txt';
-
-            $str = str_repeat("-", 30) . chr(10) . $str . chr(10) . str_repeat("-", 30) . chr(10);
-            $rit = UT::scriviTesto($file, $str);
-
-            if ($rit) {
-                echo "<br>" . str_repeat("-", 30) . "<br>Modulo inviato correttamente<br>";
-            } else {
-                echo "<br>" . str_repeat("-", 30) . "<br>Problema nell'invio del modulo<br>";
-            }  
-             echo "</div>";
+            echo "<br>" . str_repeat("-", 30) . "<br>Problema nell'invio del modulo<br>";
         }
+        echo "</div>";
+    }
         ?>
-    </div>
 
-    <!-- FOOTER -->
+        <div class="mappa">
+            <h2>INDICAZIONE MAPPA</h2>
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2821.463760144219!2d7.645665275037975!3d44.995203464610405!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47881244e0d5897b%3A0x1b7ab3f8d62eb5eb!2sVia%20Giuseppe%20Giusti%2C%203%2C%2010042%20Nichelino%20TO!5e0!3m2!1sit!2sit!4v1716892363978!5m2!1sit!2sit"
+                width="400" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        </div>
 
-    <?php
-    footer(); // richiama la funzione footer //
-    ?>
+        <!-- DATI PERSONALI -->
+        <div class="rigaFooter">
+            <div class="dati">
+                <ul>
+                    <li>
+                        <p>vienici a trovare in:</p>
+                        <address>
+                            Largo Giusti,3 <br> 10100 Nichelino (to)<br>Italia
+                        </address>
+
+                    </li>
+
+                    <li>
+                        <p>email - telefono:</p>
+                        <address>
+                            <ul>
+                                <li>
+                                    <a href="francescospinazzola084@gmail.com"
+                                        title="scrivici una email">francescospinazzola084@gmail.com</a>
+                                </li>
+                                <li>
+                                    <a href="tel:3402330981" title="telefonaci"> 3402330981</a>
+                                </li>
+                            </ul>
+                        </address>
+                    </li>
+
+                    <li>
+                        <p>seguici su:</p>
+                        <address>
+                            <ul>
+                                <li>
+                                    <a href="http://www.facebook.com" title="seguici su facebook">facebook</a>
+                                </li>
+                                <li>
+                                    <a href="http://www.twitter.com" title="seguici su twitter">twitter</a>
+                                </li>
+                                <li>
+                                    <a href="http://wwww.instagram.com" title="seguici su instagram">instagram</a>
+                                </li>
+                            </ul>
+                        </address>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </main>
+
+        <!-- FOOTER -->
 
 
+            <?php
+            $strFooter =  footer(); // richiama la funzione footer //
+            echo $strFooter;
+            ?>
 
-
-
-
-
-
-
-
-
-
+     
 
 
 

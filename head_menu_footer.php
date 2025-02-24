@@ -5,35 +5,30 @@ ini_set("auto_detect_line_endings", true);
 
 use MieClassi\Utility as UT;
 
-?>
-
-<!-- FUNZIONE HEAD -->
-<?php
-function head($title)
+function head($title,$arrCSS=null)
 {
-    echo '<!DOCTYPE html>
-    <html lang="it">
-    
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>' . $title . '</title>
-    </head>';
+    $str= '<!DOCTYPE html>'. 
+        '<html lang="it">'. 
+        '<head>'. 
+        '<meta charset="UTF-8">'. 
+        '<meta name="viewport" content="width=device-width, initial-scale=1.0">'. 
+        '<title>' . $title . '</title>'. 
+        '<link href="css/comune.min.css" rel="stylesheet">';
+    if($arrCSS!==null){
+        foreach($arrCSS as $cssSingolo){
+            $str.='<link href="css/'.$cssSingolo.'" rel="stylesheet">';
+        }
+    }   
+    $str.='</head>';
+    return $str;
 }
-?>
 
-
-<body>
-
-    <!-- FUNZIONE MENU -->
-    <?php
-    function menu($menu)
-    {
-        $arr = json_decode(UT::leggiTesto($menu));
-        $selezionato = UT::richiestaHTTP("selezionato");
-        $selezionato = ($selezionato == null) ? 1 : $selezionato;
-        echo '<header>
-            <nav class="menu">
+function menu($menu)
+{
+    $arr = json_decode(UT::leggiTesto($menu));
+    $selezionato = UT::richiestaHTTP("selezionato");
+    $selezionato = ($selezionato == null) ? 1 : $selezionato;
+    $str='<nav class="menu">
                 <input id="controllo" type="checkbox">
                 <label class="label-controllo" for="controllo">
                     <span></span>
@@ -41,54 +36,42 @@ function head($title)
                 <a href="#" class="logo">MENU</a>
                 <ul id="menu">';
 
-        foreach ($arr as $link) {
-            $n = $link->id;
-            $classeSelezionato = ($n == $selezionato) ? ' class="selezionato"' : '';
-            printf(
-                '<li %s><a href="%s?selezionato=%u" title="%s" class="vociMenu">%s</a></li>',
-                $classeSelezionato,
-                $link->url,
-                $link->id,
-                $link->title,
-                $link->nome
-            );
-        }
-
-        echo '      </ul>
-            </nav>
-          </header>';
+    foreach ($arr as $link) {
+        $n = $link->id;
+        $classeSelezionato = ($n == $selezionato) ? ' class="selezionato"' : '';
+        $str.=sprintf(
+            '<li %s><a href="%s?selezionato=%u" title="%s" class="vociMenu">%s</a></li>',
+            $classeSelezionato,
+            $link->url,
+            $link->id,
+            $link->title,
+            $link->nome
+        );
     }
-    ?>
-    <!-- FUNZIONE LAVORI -->
-    <?php
-    function lavori($file)
-    {
-        $lav = json_decode(UT::leggiTesto($file));
-        // $selezionato = UT::richiestaHTTP("selezionato");
 
-        foreach ($lav as $lavoro) {
+    $str.='</ul></nav>';
+    return $str;
+}
 
-
-            $tmp = '<div>
+function lavori($file)
+{
+    $str='';
+    $lav = json_decode(UT::leggiTesto($file));
+    foreach ($lav as $lavoro) {
+        $tmp = '<div>
             <h2>%s</h2>
               <a href="%s" title="%s">
                 <img src="./img/%s" alt="%s" >
                  </a>
                     </div>';
-
-            printf($tmp, $lavoro->titolo, $lavoro->url, $lavoro->title, $lavoro->img, $lavoro->alt);
-        }
+        $str.=sprintf($tmp, $lavoro->titolo, $lavoro->url, $lavoro->title, $lavoro->img, $lavoro->alt);
     }
-    ?>
+    return $str;
+}
 
-
-
-
-    <!-- FUNZIONE FOOTER -->
-    <?php
-    function footer()
-    {
-        echo '<footer>
+function footer()
+{
+    $str= '<footer>
             <div class="privacy">
                 <ul>
                     <li>
@@ -103,8 +86,8 @@ function head($title)
                 </ul>
             </div>
           </footer>';
-    }
-    ?>
+          return $str;
+}
+?>
 
 
-</body>

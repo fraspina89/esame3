@@ -12,21 +12,20 @@ $menu = "./json/menu.json";
 $file = "./json/work.json";
 $lav = json_decode(UT::leggiTesto($file));
 
-// $selezionato = UT::richiestaHTTP("selezionato");
 $idWork = UT::richiestaHTTP("idWork");
 $idWork = ($idWork == null) ? 1 : $idWork;
 
+
+
+$arrCss = [];
+$arrCss[] = "portfolio.min.css";
+$strHead = head('Portfolio', $arrCss); // richiama funzione head //
+echo $strHead;
 ?>
 
 
 
-<?php
-head('Portfolio'); // richiama funzione head //
-?>
 
-<!-- CSS -->
-<link href="./css/portfolio.min.css" rel="stylesheet">
-<link href="./css/comune.min.css" rel="stylesheet">
 
 
 
@@ -34,7 +33,8 @@ head('Portfolio'); // richiama funzione head //
     <header>
 
         <?php
-        menu($menu); // richiama funzione menu //
+        $strMenu = menu($menu); // richiama funzione menu //
+        echo $strMenu;
         ?>
 
     </header>
@@ -54,9 +54,9 @@ head('Portfolio'); // richiama funzione head //
                         <a href="work.php?idWork=%u"  >
                             <img class="immagine" src="./img/%s" alt="%s">
                         </a>
-                        <p>%s</p>
-                        <p>%s</p>
                         <p class="azienda">%s</p>
+                        <p>%s</p>
+                        <p >%s</p>
                     </div>';
                     printf($tmp, $lavoro->id, $lavoro->img, $lavoro->alt , $lavoro->description, $lavoro->data, $lavoro->azienda);
                 }
@@ -70,8 +70,9 @@ head('Portfolio'); // richiama funzione head //
         <h3>ALTRI LAVORI</h3>
         <div class="lavori">
 
-            <?php
-            lavori($file); // richiama la funzione dei lavori //
+        <?php
+            $strLavori = lavori($file); // richiama la funzione lavori //
+            echo $strLavori;
             ?>
 
         </div>
@@ -79,8 +80,10 @@ head('Portfolio'); // richiama funzione head //
 
     <!-- FOOTER -->
 
+    
     <?php
-    footer(); // richiama funzione il footer //
+    $strFooter =  footer(); // richiama la funzione footer //
+    echo $strFooter;
     ?>
 
 
