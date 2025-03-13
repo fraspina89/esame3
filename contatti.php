@@ -89,13 +89,12 @@ echo $strHead;
 
 
 
-
-
 <body>
 
     <header>
 
         <?php
+        
         $strMenu = menu($menu); // richiama funzione menu //
         echo $strMenu;
 

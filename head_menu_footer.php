@@ -60,11 +60,11 @@ function lavori($file)
     foreach ($lav as $lavoro) {
         $tmp = '<div>
             <h2>%s</h2>
-              <a href="%s" title="%s">
+              <a href="work.php?idWork=%u" title="%s">
                 <img src="./img/%s" alt="%s" >
                  </a>
                     </div>';
-        $str.=sprintf($tmp, $lavoro->titolo, $lavoro->url, $lavoro->title, $lavoro->img, $lavoro->alt);
+        $str.=sprintf($tmp, $lavoro->titolo, $lavoro->id, $lavoro->title, $lavoro->img, $lavoro->alt);
     }
     return $str;
 }

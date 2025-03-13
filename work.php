@@ -15,26 +15,22 @@ $lav = json_decode(UT::leggiTesto($file));
 $idWork = UT::richiestaHTTP("idWork");
 $idWork = ($idWork == null) ? 1 : $idWork;
 
-
-
 $arrCss = [];
 $arrCss[] = "portfolio.min.css";
-$strHead = head('Portfolio', $arrCss); // richiama funzione head //
+$strHead = head('Work', $arrCss); // richiama funzione head //
 echo $strHead;
+
 ?>
-
-
-
-
-
 
 
 <body>
     <header>
 
         <?php
+
         $strMenu = menu($menu); // richiama funzione menu //
         echo $strMenu;
+
         ?>
 
     </header>
@@ -46,7 +42,9 @@ echo $strHead;
         <h1>I AM FRANCESCO SPINAZZOLA</h1>
         <h2>LAVORO SELEZIONATO <?php echo $idWork; ?></h2>
         <div class="lavoro">
+
             <?php
+
             foreach ($lav as $lavoro) {
                 if ($idWork == $lavoro->id) {
                     $tmp = '
@@ -58,9 +56,10 @@ echo $strHead;
                         <p>%s</p>
                         <p >%s</p>
                     </div>';
-                    printf($tmp, $lavoro->id, $lavoro->img, $lavoro->alt , $lavoro->description, $lavoro->data, $lavoro->azienda);
+                    printf($tmp, $lavoro->id, $lavoro->img, $lavoro->alt, $lavoro->description, $lavoro->data, $lavoro->azienda);
                 }
             }
+
             ?>
 
         </div>
@@ -70,9 +69,11 @@ echo $strHead;
         <h3>ALTRI LAVORI</h3>
         <div class="lavori">
 
-        <?php
+            <?php
+
             $strLavori = lavori($file); // richiama la funzione lavori //
             echo $strLavori;
+
             ?>
 
         </div>
@@ -80,16 +81,13 @@ echo $strHead;
 
     <!-- FOOTER -->
 
-    
+
     <?php
+
     $strFooter =  footer(); // richiama la funzione footer //
     echo $strFooter;
+
     ?>
-
-
-
-
-
 
 </body>
 

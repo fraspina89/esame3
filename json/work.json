@@ -1,7 +1,6 @@
 [
     {
         "id": 1,
-        "url": "work.php?idWork=1",
         "title": "Lavoro 1",
         "titolo": "Lavoro 1",
         "img": "lavoro1.jpg",
@@ -12,7 +11,6 @@
     },
     {
         "id": 2,
-        "url": "work.php?idWork=2",
         "title": "Lavoro 2",
         "titolo": "Lavoro 2",
         "img": "lavoro2.jpg",
@@ -23,7 +21,6 @@
     },
     {
         "id": 3,
-        "url": "work.php?idWork=3",
         "title": "Lavoro 3",
         "titolo": "Lavoro 3",
         "img": "lavoro3.jpg",

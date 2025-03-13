@@ -22,10 +22,10 @@ echo $strHead;
     <header>
 
         <?php
-     
-     $strMenu = menu($menu); // richiama funzione menu //
-     echo $strMenu;
-     
+
+        $strMenu = menu($menu); // richiama funzione menu //
+        echo $strMenu;
+
         ?>
     </header>
 
@@ -49,7 +49,7 @@ echo $strHead;
             <!-- LAVORI -->
             <div class="lavori">
                 <h2>STUDI E QUALIFICHE</h2>
-                <img src="./img/progetti.jpg" alt="studi" title="studi" >
+                <img src="./img/progetti.jpg" alt="studi" title="studi">
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Nostrum aperiam dolorem nihil officia voluptas cum aliquam illo doloribus
                     aspernatur non obcaecati dolores dicta culpa minus voluptatum, dolorum sed accusantium inventore?
@@ -59,7 +59,7 @@ echo $strHead;
             <!-- PROGETTI -->
             <div class="progetti">
                 <h2>OBIETTIVI FUTURI</h2>
-                <img src="./img/studi.jpg" alt="progetti" title="progetti" >
+                <img src="./img/studi.jpg" alt="progetti" title="progetti">
                 <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Inventore amet, ipsum nesciunt
                     reprehenderit,
                     ea odio temporibus earum error incidunt ut expedita quo, sit aliquid quaerat quos provident tempore
@@ -70,7 +70,7 @@ echo $strHead;
 
     <!-- FOOTER -->
 
-  <?php
+    <?php
     $strFooter =  footer(); // richiama la funzione footer //
     echo $strFooter;
     ?>

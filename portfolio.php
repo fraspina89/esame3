@@ -14,16 +14,19 @@ $file = "./json/work.json";
 
 $arrCss = [];
 $arrCss[] = "portfolio.min.css";
-$strHead = head('Portfolio', $arrCss); // richiama funzione head //
+$strHead = head('portfolio', $arrCss); // richiama funzione head //
 echo $strHead;
+
 ?>
 
 <body>
     <header>
 
         <?php
+
         $strMenu = menu($menu); // richiama funzione menu //
         echo $strMenu;
+
         ?>
     </header>
 
@@ -48,9 +51,12 @@ echo $strHead;
 
         <h3>ALTRI LAVORI</h3>
         <div class="lavori">
+
             <?php
+
             $strLavori = lavori($file);  // richiama la funzione lavori //
             echo $strLavori;
+
             ?>
         </div>
     </main>
@@ -58,8 +64,10 @@ echo $strHead;
     <!-- FOOTER -->
 
     <?php
+
     $strFooter =  footer(); // richiama la funzione footer //
     echo $strFooter;
+
     ?>
 
 

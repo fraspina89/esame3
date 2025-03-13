@@ -1,33 +1,61 @@
 @import "variabiliEs";
 
 
+main {
+  
+    @media only screen and (max-width: 320px) {
+        padding: 50px 5px 0px 5px;
+    }
+}
+
+
 /* PRESENTAZIONE */
 .presentazione {
-
-    padding: 30px 30px 30px 30px;
+    @media screen and (max-width: 1920px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 80%;
+        margin: 0 auto;
+    }
 
     @media screen and (max-width: 768px) {
         padding: 20px;
     }
 
-
     h1 {
-        margin: 10px auto 10px auto;
-        text-align: center;
-        color: $coloreMenuhover;
+        @media screen and (max-width: 1920px) {
+            margin: 10px auto 10px auto;
+            text-align: center;
+            color: $coloretit;
+            text-shadow: 1px 1px 3px $coloreMenuhover(0, 0, 0, 0.4);
+        }
+
+        @media screen and (max-width: 1440px) {
+            margin: 40px auto 10px auto;
+        }
 
         @media screen and (max-width: 768px) {
-            font-size: 1.8rem;
+            font-size: 15px;
         }
 
     }
 
     p {
-        text-align: center;
-        margin: 10px auto 10px auto;
-        width: 500px;
-        font-style: $fontport;
-        font-size: large;
+        @media screen and (max-width: 1920px) {
+            text-align: center;
+            margin: 30px auto 30px auto;
+            width: 500px;
+            font-style: $fontport;
+            font-size: 27px;
+            color: $coloreMenu;
+            text-shadow: 1px 1px 3px $coloreMenuhover(0, 0, 0, 1);
+        }
+
+        @media screen and (max-width: 1024px) {
+            font-size: 20px;
+        }
 
         @media screen and (max-width: 768px) {
             width: 90%;
@@ -42,90 +70,167 @@
     }
 
     img {
-        margin-left: 220px;
-        width: 600px;
+        @media screen and (max-width: 1920px) {
+
+            width: 800px;
+        }
+
+        @media screen and (max-width: 1024px) {
+            width: 500px;
+        }
 
         @media screen and (max-width: 768px) {
-            width: 80%;
+            width: 400px;
             margin: 20px auto;
             display: block;
         }
 
+        @media screen and (max-width: 500px) {
+            width: 300px;
+        }
 
+        @media screen and (max-width: 400px) {
+            width: 250px;
+        }
+
+        @media screen and (max-width: 320px) {
+            margin: 20px 20px auto;
+        }
     }
 }
 
+
 /* STUDI */
 .studi {
-    display: flex;
-    flex-direction: row;
-    margin-top: 50px;
-    align-items: center;
+    @media screen and (max-width: 1920px) {
+        display: flex;
+        flex-direction: row;
+        margin-top: 100px;
+        margin-left: 200px;
+        align-items: center;
+        width: 100%;
+    }
+
+    @media screen and (max-width: 1440px) {
+        margin-left: 10%;
+    }
+
+    @media screen and (max-width: 1024px) {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-left: 20px;
+    }
 
     @media screen and (max-width: 768px) {
         flex-direction: column;
         align-items: center;
         text-align: center;
         margin-top: 5px;
+        margin-left: 5px;
     }
 }
 
 
 /* LAVORI */
 .lavori {
-    width: 710px;
-    height: 600px;
-    border: 2px solid $coloreButtonHover;
-    border-radius: 15px;
+    @media screen and (max-width: 1920px) {
+        width: 40%;
+        height: 700px;
+        border: 2px solid $coloreButtonHover;
+        border-radius: 15px;
+    }
+
+    @media screen and (max-width: 1024px) {
+        width: 50%;
+    }
 
     @media screen and (max-width: 768px) {
-        width: 100%;
+        width: 70%;
         height: auto;
         border: none;
         border-top: 2px solid $coloreMenuhover;
         border-radius: 0;
     }
 
+    @media screen and (max-width: 500px) {
+        margin-right: 10px;
+        border-top: 2px solid $coloreButtonHover;
+    }
 
     img {
-        padding: 40px 10px 30px 90px;
-        margin-left: 30px;
-        width: 400px;
+        @media screen and (max-width: 1920px) {
+            padding: 40px 10px 30px 90px;
+            margin-left: 90px;
+            width: 400px;
+        }
+
+        @media screen and (max-width: 1440px) {
+            margin-left: -20px;
+        }
+
+        @media screen and (max-width: 1024px) {
+            width: 300px;
+            height: 300px;
+            margin-left: 10px;
+        }
 
         @media screen and (max-width: 768px) {
             padding: 20px;
             margin-left: 0;
-            width: 50%;
+            width: 400px;
+            height: 400px;
             display: block;
             margin: 0 auto;
         }
 
+        @media screen and (max-width: 500px) {
+            width: 250px;
+            height: 250px;
+        }
+
+        @media screen and (max-width: 400px) {
+            height: 200px;
+            width: 200px;
+            margin-left: 30px;
+        }
+
+
         @media screen and (max-width: 320px) {
             height: 200px;
             width: 200px;
+            margin-left: 10px;
         }
     }
 
 
     p {
-        padding: 40px 60px 30px 80px;
-        font-style: $fontport;
-        font-size: large;
+        @media screen and (max-width: 1920px) {
+            padding: 40px 60px 30px 80px;
+            font-style: $fontport;
+            font-size: 23px;
+            color: $coloreMenu;
+            text-shadow: 1px 1px 3px $coloreMenuhover(0, 0, 0, 1);
+        }
+
+        @media screen and (max-width: 1024px) {
+            font-size: 20px;
+        }
 
         @media screen and (max-width: 768px) {
             padding: 20px;
             font-size: 1rem;
             text-align: center;
         }
-
-        @media screen and (max-width: 320px) {
-            color: $coloreMenu;
-        }
     }
 }
 
 h2 {
-    padding: 10px 0 0 10px;
+    @media screen and (max-width: 1920px) {
+        padding: 10px 0 0 10px;
+        color: $coloretit;
+        text-shadow: 1px 1px 3px $coloreMenuhover(0, 0, 0, 0.4);
+    }
 
     @media screen and (max-width: 768px) {
         text-align: center;
@@ -136,57 +241,91 @@ h2 {
 
 /* PROGETTI */
 .progetti {
+    @media screen and (max-width: 1920px) {
+        width: 40%;
+        height: 700px;
+        border: 2px solid $coloreButtonHover;
+        border-radius: 15px;
+    }
 
-    width: 710px;
-    height: 600px;
-    border: 2px solid $coloreButtonHover;
-    border-radius: 15px;
-
+    @media screen and (max-width: 1024px) {
+        width: 50%;
+    }
 
     @media screen and (max-width: 768px) {
-        width: 100%;
+        width: 70%;
         height: auto;
         border: none;
         border-top: 2px solid $coloreMenuhover;
         border-radius: 0;
     }
 
-    img {
-        padding: 40px 10px 30px 80px;
-        margin-left: 40px;
-        height: 370px;
-        width: 400px;
+    @media screen and (max-width: 500px) {
+        margin-right: 10px;
+        border-top: 2px solid $coloreButtonHover;
+    }
 
+    img {
+        @media screen and (max-width: 1920px) {
+            padding: 40px 10px 30px 80px;
+            margin-left: 90px;
+            height: 370px;
+            width: 400px;
+        }
+
+        @media screen and (max-width: 1440px) {
+            margin-left: -20px;
+        }
+
+        @media screen and (max-width: 1024px) {
+            width: 300px;
+            height: 300px;
+            margin-left: 5px;
+        }
 
         @media screen and (max-width: 768px) {
             padding: 20px;
-            width: 50%;
+            width: 400px;
+            height: 400px;
             display: block;
             margin: 0 auto;
+        }
 
+        @media screen and (max-width: 500px) {
+            width: 250px;
+            height: 250px;
+        }
+
+        @media screen and (max-width: 400px) {
+            width: 200px;
+            height: 200px;
+            margin-left: 30px;
         }
 
         @media screen and (max-width: 320px) {
             height: 200px;
             width: 200px;
+            margin-left: 10px;
         }
-
-
     }
 
     p {
-        padding: 40px 60px 30px 80px;
-        font-style: $fontport;
-        font-size: large;
+        @media screen and (max-width: 1920px) {
+            padding: 40px 60px 30px 80px;
+            font-style: $fontport;
+            font-size: 23px;
+            color: $coloreMenu;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
+        }
+
+        @media screen and (max-width: 1024px) {
+            font-size: 20px;
+        }
 
         @media screen and (max-width: 768px) {
             padding: 20px;
             font-size: 1rem;
             text-align: center;
-        }
-
-        @media screen and (max-width: 320px) {
-            color: $coloreMenu;
         }
     }
 }
