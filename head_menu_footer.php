@@ -2,24 +2,25 @@
 <?php
 
 ini_set("auto_detect_line_endings", true);
+require_once('MieClassi/Utility.php');
 
 use MieClassi\Utility as UT;
 
-function head($title,$arrCSS=null)
+function head($title, $arrCSS = null)
 {
-    $str= '<!DOCTYPE html>'. 
-        '<html lang="it">'. 
-        '<head>'. 
-        '<meta charset="UTF-8">'. 
-        '<meta name="viewport" content="width=device-width, initial-scale=1.0">'. 
-        '<title>' . $title . '</title>'. 
+    $str = '<!DOCTYPE html>' .
+        '<html lang="it">' .
+        '<head>' .
+        '<meta charset="UTF-8">' .
+        '<meta name="viewport" content="width=device-width, initial-scale=1.0">' .
+        '<title>' . $title . '</title>' .
         '<link href="css/comune.min.css" rel="stylesheet">';
-    if($arrCSS!==null){
-        foreach($arrCSS as $cssSingolo){
-            $str.='<link href="css/'.$cssSingolo.'" rel="stylesheet">';
+    if ($arrCSS !== null) {
+        foreach ($arrCSS as $cssSingolo) {
+            $str .= '<link href="css/' . $cssSingolo . '" rel="stylesheet">';
         }
-    }   
-    $str.='</head>';
+    }
+    $str .= '</head>';
     return $str;
 }
 
@@ -28,7 +29,7 @@ function menu($menu)
     $arr = json_decode(UT::leggiTesto($menu));
     $selezionato = UT::richiestaHTTP("selezionato");
     $selezionato = ($selezionato == null) ? 1 : $selezionato;
-    $str='<nav class="menu">
+    $str = '<nav class="menu">
                 <input id="controllo" type="checkbox">
                 <label class="label-controllo" for="controllo">
                     <span></span>
@@ -39,7 +40,7 @@ function menu($menu)
     foreach ($arr as $link) {
         $n = $link->id;
         $classeSelezionato = ($n == $selezionato) ? ' class="selezionato"' : '';
-        $str.=sprintf(
+        $str .= sprintf(
             '<li %s><a href="%s?selezionato=%u" title="%s" class="vociMenu">%s</a></li>',
             $classeSelezionato,
             $link->url,
@@ -49,29 +50,34 @@ function menu($menu)
         );
     }
 
-    $str.='</ul></nav>';
+    $str .= '</ul></nav>';
     return $str;
 }
 
-function lavori($file)
+function lavori($conn)
 {
-    $str='';
-    $lav = json_decode(UT::leggiTesto($file));
-    foreach ($lav as $lavoro) {
-        $tmp = '<div>
-            <h2>%s</h2>
-              <a href="work.php?idWork=%u" title="%s">
-                <img src="./img/%s" alt="%s" >
-                 </a>
-                    </div>';
-        $str.=sprintf($tmp, $lavoro->titolo, $lavoro->id, $lavoro->title, $lavoro->img, $lavoro->alt);
+    $str = '';
+    $query = "SELECT * FROM lavori ORDER BY id ASC";
+    $result = mysqli_query($conn, $query);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($lavoro = mysqli_fetch_assoc($result)) {
+            $tmp = '<div>
+                <h2>%s</h2>
+                <a href="work.php?idWork=%u" title="%s">
+                    <img src="./img/%s" alt="%s" >
+                </a>
+            </div>';
+            $str .= sprintf($tmp, $lavoro['titolo'], $lavoro['id'], $lavoro['titolo'], $lavoro['img'], $lavoro['alt']);
+        }
     }
+
     return $str;
 }
 
 function footer()
 {
-    $str= '<footer>
+    $str = '<footer>
             <div class="privacy">
                 <ul>
                     <li>
@@ -86,7 +92,7 @@ function footer()
                 </ul>
             </div>
           </footer>';
-          return $str;
+    return $str;
 }
 ?>
 

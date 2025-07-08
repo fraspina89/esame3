@@ -2,33 +2,29 @@
 
 ini_set("auto_detect_line_endings", true);
 
+// Includi le classi e i componenti necessari //
 require_once('./MieClassi/Utility.php');
 require_once('head_menu_footer.php');
 
 use MieClassi\Utility as UT;
 
+// Percorso del file JSON per il menu //
 $menu = "./json/menu.json";
 
 
 $arrCss = [];
 $arrCss[] = "index.min.css";
-$strHead = head('index', $arrCss); // richiama funzione head //
-echo $strHead;
+
+// Genera e stampa la sezione <head> della pagina //
+echo head('index', $arrCss);
 ?>
-
-
 
 <body>
     <header>
 
-        <?php
-
-        $strMenu = menu($menu); // richiama funzione menu //
-        echo $strMenu;
-
+        <?php echo menu($menu); // Stampa il menu principale // 
         ?>
     </header>
-
 
     <main>
         <h1>I AM FRANCESCO SPINAZZOLA</h1>
@@ -70,9 +66,7 @@ echo $strHead;
 
     <!-- FOOTER -->
 
-    <?php
-    $strFooter =  footer(); // richiama la funzione footer //
-    echo $strFooter;
+    <?php echo footer(); // Stampa il footer // 
     ?>
 </body>
 
