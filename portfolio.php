@@ -1,9 +1,12 @@
 <?php
-// Includi la configurazione del database e i componenti comuni (head, menu, footer)
+
+ini_set("auto_detect_line_endings", true);
+
+// Includi le classi e i componenti necessari //
 require_once("admin/config.php");
 require_once("head_menu_footer.php");
 
-// Percorso del file JSON per il menu di navigazione //
+// Percorso del file JSON per il menu //
 $menu = "./json/menu.json";
 
 $arrCss = [];
@@ -48,7 +51,7 @@ echo head('portfolio', $arrCss);
                     echo '<div>';
                     echo '<h2>' . htmlspecialchars($lavoro['titolo']) . '</h2>';
                     echo '<a href="work.php?idWork=' . $lavoro['id'] . '" title="' . htmlspecialchars($lavoro['titolo']) . '">';
-                    echo '<img src="./img/' . htmlspecialchars($lavoro['img']) . '" alt="' . htmlspecialchars($lavoro['alt']) . '">';
+                    echo '<img src="./img/' . htmlspecialchars($lavoro['img']) . '" alt="' . htmlspecialchars($lavoro['ALT']) . '">';
                     echo '</a>';
                     echo '</div>';
                 }

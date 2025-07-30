@@ -1,7 +1,7 @@
 <?php
 ini_set("auto_detect_line_endings", true);
 
-// Includi la configurazione del database e i componenti comuni (head, menu, footer) //
+// Includi le classi e i componenti necessari //
 require_once('./MieClassi/Utility.php');
 require_once('head_menu_footer.php');
 require_once('admin/config.php'); // Connessione al DB
@@ -36,9 +36,11 @@ echo head('work', $arrCss);
         <h2>LAVORO SELEZIONATO <?php echo $idWork; ?></h2>
 
         <?php
-        // Query per recuperare il lavoro specifico //
-        $query = "SELECT * FROM lavori WHERE id = $idWork";
-        $result = $conn->query($query);
+        // Query per recuperare il lavoro specifico con prepared statement per sicurezza //
+        $stmt = $conn->prepare("SELECT * FROM lavori WHERE id = ?");
+        $stmt->bind_param("i", $idWork);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result && $result->num_rows > 0) {
             // Se il lavoro esiste, mostra i dettagli //
@@ -50,13 +52,14 @@ echo head('work', $arrCss);
                     <?php echo nl2br(htmlspecialchars($lavoro['description'])); ?><br><br>
                     <?php echo htmlspecialchars($lavoro['data']); ?>
                 </p>
-                <img class="immagine" src="./img/<?php echo htmlspecialchars($lavoro['img']); ?>" alt="<?php echo htmlspecialchars($lavoro['alt']); ?>">
+                <img class="immagine" src="./img/<?php echo htmlspecialchars($lavoro['img']); ?>" alt="<?php echo htmlspecialchars($lavoro['ALT']); ?>">
             </div>
         <?php
         } else {
             // Se il lavoro non esiste, mostra un messaggio di errore //
             echo "<p>Lavoro non trovato.</p>";
         }
+        $stmt->close();
         ?>
 
         <!-- ELENCO DEI LAVORI -->
