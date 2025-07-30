@@ -1,6 +1,6 @@
 <?php
 
-// Avvia la sessione per gestire l'autenticazione dell'utente
+// Avvia la sessione per gestire l'autenticazione dell'utente //
 session_start();
 require_once("config.php");
 require_once("componenti_backend.php");
@@ -40,7 +40,6 @@ $lavoro = null;
 // --- AGGIUNTA ---
 if ($op === 'ADD' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $titolo = trim($_POST['titolo']);
-    $img = trim($_POST['img']);
     $descrizione = trim($_POST['description']);
     $data = trim($_POST['data']);
     $azienda = trim($_POST['azienda']);
@@ -49,8 +48,6 @@ if ($op === 'ADD' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validazione lato server //
     if (strlen($titolo) < 3 || strlen($titolo) > 100) {
         $errore = "Il titolo deve essere tra 3 e 100 caratteri.";
-    } elseif (!preg_match('/\.(jpg|jpeg|png|gif)$/i', $img)) {
-        $errore = "L'immagine deve essere un file JPG, JPEG, PNG o GIF.";
     } elseif (strlen($descrizione) < 10) {
         $errore = "La descrizione deve essere di almeno 10 caratteri.";
     } elseif ($data !== "" && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $data)) {
@@ -60,49 +57,81 @@ if ($op === 'ADD' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($categoria_id <= 0) {
         $errore = "Seleziona una categoria valida.";
     } else {
-        // Inserimento nel database //
-        $stmt = $conn->prepare("INSERT INTO lavori (titolo, img, description, data, azienda, categoria_id) VALUES (?, ?, ?, ?, ?, ?)");
-        if (!$stmt) {
-            $errore = "Errore nella preparazione della query: " . htmlspecialchars($conn->error);
+        // Gestione upload dell'immagine //
+        if (!isset($_FILES['img']) || $_FILES['img']['error'] !== UPLOAD_ERR_OK) {
+            $errore = "Seleziona un'immagine da caricare.";
         } else {
-            $stmt->bind_param("sssssi", $titolo, $img, $descrizione, $data, $azienda, $categoria_id);
-            if (!$stmt->execute()) {
-                $errore = "Errore nell'inserimento: " . htmlspecialchars($stmt->error);
+            $uploadResult = gestisciUploadImmagine($_FILES['img']);
+            if (!$uploadResult['successo']) {
+                $errore = $uploadResult['messaggio'];
             } else {
-                $stmt->close();
-                $_SESSION['msg'] = "Lavoro aggiunto con successo!";
-                header("Location: gestione_lavori.php");
-                exit;
+                $nomeFile = $uploadResult['nomeFile'];
+
+                // Inserimento nel database con ALT automatico = "foto" //
+                $stmt = $conn->prepare("INSERT INTO lavori (titolo, img, ALT, description, data, azienda, categoria_id) VALUES (?, ?, 'foto', ?, ?, ?, ?)");
+                if (!$stmt) {
+                    $errore = "Errore nella preparazione della query: " . htmlspecialchars($conn->error);
+                } else {
+                    $stmt->bind_param("sssssi", $titolo, $nomeFile, $descrizione, $data, $azienda, $categoria_id);
+                    if (!$stmt->execute()) {
+                        $errore = "Errore nell'inserimento: " . htmlspecialchars($stmt->error);
+                        // Elimina il file caricato se l'inserimento fallisce //
+                        if (file_exists('../img/' . $nomeFile)) {
+                            unlink('../img/' . $nomeFile);
+                        }
+                    } else {
+                        $stmt->close();
+                        $_SESSION['msg'] = "Lavoro aggiunto con successo!";
+                        header("Location: gestione_lavori.php");
+                        exit;
+                    }
+                    $stmt->close();
+                }
             }
-            $stmt->close();
         }
     }
 }
 
 // --- ELIMINAZIONE ---
 if ($op === 'DEL' && $idSel) {
-    $stmt = $conn->prepare("DELETE FROM lavori WHERE id = ?");
-    if (!$stmt) {
-        $errore = "Errore nella preparazione della query: " . htmlspecialchars($conn->error);
-    } else {
+    // Prima recupera il nome del file immagine per eliminarlo //
+    $stmt = $conn->prepare("SELECT img FROM lavori WHERE id = ?");
+    if ($stmt) {
         $stmt->bind_param("i", $idSel);
-        if (!$stmt->execute()) {
-            $errore = "Errore nell'eliminazione: " . htmlspecialchars($stmt->error);
-        } else {
-            $stmt->close();
-            $_SESSION['msg'] = "Lavoro eliminato con successo!";
-            header("Location: gestione_lavori.php");
-            exit;
-        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $lavoroData = $result->fetch_assoc();
         $stmt->close();
+
+        // Elimina il record dal database //
+        $stmt = $conn->prepare("DELETE FROM lavori WHERE id = ?");
+        if (!$stmt) {
+            $errore = "Errore nella preparazione della query: " . htmlspecialchars($conn->error);
+        } else {
+            $stmt->bind_param("i", $idSel);
+            if (!$stmt->execute()) {
+                $errore = "Errore nell'eliminazione: " . htmlspecialchars($stmt->error);
+            } else {
+                // Se l'eliminazione dal DB è riuscita, elimina anche il file //
+                if ($lavoroData && !empty($lavoroData['img']) && file_exists('../img/' . $lavoroData['img'])) {
+                    unlink('../img/' . $lavoroData['img']);
+                }
+                $stmt->close();
+                $_SESSION['msg'] = "Lavoro eliminato con successo!";
+                header("Location: gestione_lavori.php");
+                exit;
+            }
+            $stmt->close();
+        }
+    } else {
+        $errore = "Errore nella preparazione della query: " . htmlspecialchars($conn->error);
     }
 }
 
-// --- MODIFICA ---
+// --- MODIFICA --- //
 if ($op === 'MOD' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = (int)$_POST['id'];
     $titolo = trim($_POST['titolo']);
-    $img = trim($_POST['img']);
     $descrizione = trim($_POST['description']);
     $data = trim($_POST['data']);
     $azienda = trim($_POST['azienda']);
@@ -111,8 +140,6 @@ if ($op === 'MOD' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validazione lato server //
     if (strlen($titolo) < 3 || strlen($titolo) > 100) {
         $errore = "Il titolo deve essere tra 3 e 100 caratteri.";
-    } elseif (!preg_match('/\.(jpg|jpeg|png|gif)$/i', $img)) {
-        $errore = "L'immagine deve essere un file JPG, JPEG, PNG o GIF.";
     } elseif (strlen($descrizione) < 10) {
         $errore = "La descrizione deve essere di almeno 10 caratteri.";
     } elseif ($data !== "" && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $data)) {
@@ -122,21 +149,39 @@ if ($op === 'MOD' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($categoria_id <= 0) {
         $errore = "Seleziona una categoria valida.";
     } else {
-        // Aggiornamento nel database //
-        $stmt = $conn->prepare("UPDATE lavori SET titolo = ?, img = ?, description = ?, data = ?, azienda = ?, categoria_id = ? WHERE id = ?");
-        if (!$stmt) {
-            $errore = "Errore nella preparazione della query: " . htmlspecialchars($conn->error);
+        // Recupera l'immagine attuale per gestire l'upload //
+        $stmt = $conn->prepare("SELECT img FROM lavori WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $lavoroAttuale = $result->fetch_assoc();
+        $stmt->close();
+
+        $vecchiaImmagine = $lavoroAttuale['img'] ?? '';
+
+        // Gestione upload dell'immagine (opzionale in modifica) //
+        $uploadResult = gestisciUploadImmagine($_FILES['img'] ?? [], $vecchiaImmagine);
+        if (!$uploadResult['successo']) {
+            $errore = $uploadResult['messaggio'];
         } else {
-            $stmt->bind_param("ssssssi", $titolo, $img, $descrizione, $data, $azienda, $categoria_id, $id);
-            if (!$stmt->execute()) {
-                $errore = "Errore nella modifica: " . htmlspecialchars($stmt->error);
+            $nomeFile = $uploadResult['nomeFile'];
+
+            // Aggiornamento nel database con ALT automatico = "foto" //
+            $stmt = $conn->prepare("UPDATE lavori SET titolo = ?, img = ?, ALT = 'foto', description = ?, data = ?, azienda = ?, categoria_id = ? WHERE id = ?");
+            if (!$stmt) {
+                $errore = "Errore nella preparazione della query: " . htmlspecialchars($conn->error);
             } else {
+                $stmt->bind_param("ssssssi", $titolo, $nomeFile, $descrizione, $data, $azienda, $categoria_id, $id);
+                if (!$stmt->execute()) {
+                    $errore = "Errore nella modifica: " . htmlspecialchars($stmt->error);
+                } else {
+                    $stmt->close();
+                    $_SESSION['msg'] = "Lavoro modificato con successo!";
+                    header("Location: gestione_lavori.php");
+                    exit;
+                }
                 $stmt->close();
-                $_SESSION['msg'] = "Lavoro modificato con successo!";
-                header("Location: gestione_lavori.php");
-                exit;
             }
-            $stmt->close();
         }
     }
 }
@@ -161,7 +206,6 @@ if ($op === 'FORM-MOD' && $idSel) {
 // Stampa l'header HTML della pagina backend con il titolo "GESTIONE LAVORI" //
 echo headBackend("GESTIONE LAVORI");
 ?>
-
 
 <style>
     body {
@@ -194,6 +238,7 @@ echo headBackend("GESTIONE LAVORI");
     }
 
     form input[type="text"],
+    form input[type="file"],
     form input[type="date"],
     form textarea,
     form select {
@@ -261,6 +306,14 @@ echo headBackend("GESTIONE LAVORI");
         border-radius: 6px;
         margin-bottom: 15px;
         max-width: 600px;
+    }
+
+    .immagine-attuale {
+        max-width: 150px;
+        max-height: 100px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
     }
 </style>
 

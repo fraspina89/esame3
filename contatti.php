@@ -1,40 +1,40 @@
 <?php
+// Attiva il rilevamento automatico dei line endings (opzionale)
 ini_set("auto_detect_line_endings", true);
 
-// Includi la configurazione del database e i componenti comuni (head, menu, footer)
+// Inclusione delle classi e file necessari
 require_once('./MieClassi/Utility.php');
 require_once('head_menu_footer.php');
 require_once("admin/config.php");
 
-// Usa la classe Utility //
+// Usa la classe Utility con alias UT
 use MieClassi\Utility as UT;
 
-// Percorso del menu JSON //
+// Percorso del menu JSON
 $menu = "./json/menu.json";
 
-// Controlla se il form è stato inviato (tramite parametro GET o POST) //
+// Controlla se il form è stato inviato (tramite parametro GET o POST)
 $inviato = UT::richiestaHTTP("inviato") == 1;
 
-// Inizializza variabili dei campi e delle classi errore //
+// Inizializza variabili dei campi e delle classi errore
 $nome = $cognome = $email = $argomento = $testo = "";
 $clsErroreNome = $clsErroreCognome = $clsErroreEmail = $clsErroreArgomento = $clsErroreTesto = "";
 
-// Se il form è stato inviato, esegui la validazione lato server //
+// Se il form è stato inviato, esegui la validazione lato server
 if ($inviato) {
     $valido = 0;
 
-    // RECUPERO DATI //
-
+    // Classe CSS da applicare in caso di errore
     $clsErrore = ' class="errore" ';
+
+    // Recupera i dati inviati dal form
     $nome = UT::richiestaHTTP("nome");
     $cognome = UT::richiestaHTTP("cognome");
     $email = UT::richiestaHTTP("email");
     $argomento = UT::richiestaHTTP("argomento");
     $testo = UT::richiestaHTTP("testo");
 
-
-
-    // Validazione lato server //
+    // Validazione dei singoli campi
     if (UT::controllaRangeStringa($nome, 3, 25)) $clsErroreNome = "";
     else {
         $valido++;
@@ -65,7 +65,7 @@ if ($inviato) {
         $clsErroreTesto = $clsErrore;
     }
 
-    // Se tutti i campi sono validi, inserisci i dati nel database //
+    // Se tutti i campi sono validi, inserisci i dati nel database
     if ($valido == 0) {
         $stmt = $conn->prepare("INSERT INTO utenti (nome, cognome, email, argomento, testo) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("sssss", $nome, $cognome, $email, $argomento, $testo);
@@ -73,17 +73,18 @@ if ($inviato) {
         $stmt->close();
     }
 
+    // Aggiorna lo stato di invio in base alla validità dei dati
     $inviato = ($valido == 0);
 }
 
-
+// Array dei CSS da includere
 $arrCss = ["contatti.min.css"];
 echo head('contatti', $arrCss);
 ?>
 
 <body>
     <header>
-        <?php echo menu($menu); ?>
+        <?php echo menu($menu); // Stampa il menu ?>
     </header>
 
     <main>
@@ -136,7 +137,7 @@ echo head('contatti', $arrCss);
                 </div>
             <?php endif; ?>
 
-            <!-- MAPPA -->
+            <!-- BLOCCO MAPPA -->
             <div class="mappa">
                 <h2>INDICAZIONE MAPPA</h2>
                 <iframe
@@ -146,6 +147,7 @@ echo head('contatti', $arrCss);
             </div>
         </div> <!-- chiude .contenitore-form-mappa -->
 
+        <!-- FOOTER visibile solo se il form NON è stato inviato -->
         <?php if (!$inviato): ?>
             <div class="rigaFooter">
                 <div class="dati">
@@ -175,74 +177,65 @@ echo head('contatti', $arrCss);
         <?php endif; ?>
     </main>
 
-    <?php echo footer();  // Stampa il footer //
-    ?>
+    <?php echo footer(); // Stampa il footer generale ?>
 
-    <!-- Validazione lato client con JS -->
+    <!-- Validazione lato client con JS: messaggi specifici per ogni campo -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const form = document.querySelector("form");
-            if (!form) return;
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("form");
+        if (!form) return;
 
-            form.addEventListener("submit", function(e) {
-                let valido = true;
-                const campi = [{
-                        id: "nome",
-                        min: 3,
-                        max: 25
-                    },
-                    {
-                        id: "cognome",
-                        min: 3,
-                        max: 25
-                    },
-                    {
-                        id: "email",
-                        min: 10,
-                        max: 100,
-                        email: true
-                    },
-                    {
-                        id: "argomento",
-                        select: true
-                    },
-                    {
-                        id: "testo",
-                        min: 3,
-                        max: 500
-                    }
-                ];
+        form.addEventListener("submit", function(e) {
+            let valido = true;
+            let messaggi = [];
 
-                for (let campo of campi) {
-                    const input = document.getElementById(campo.id);
-                    const label = document.querySelector(`label[for="${campo.id}"]`);
-                    const value = input.value.trim();
-                    let errore = false;
+            const campi = [
+                { id: "nome", min: 3, max: 25, label: "Nome" },
+                { id: "cognome", min: 3, max: 25, label: "Cognome" },
+                { id: "email", min: 10, max: 100, email: true, label: "Email" },
+                { id: "argomento", select: true, label: "Argomento" },
+                { id: "testo", min: 3, max: 500, label: "Testo" }
+            ];
 
-                    // Rimuovi errore precedente sulla label //
-                    if (label) label.classList.remove("errore");
+            for (let campo of campi) {
+                const input = document.getElementById(campo.id);
+                const label = document.querySelector(`label[for="${campo.id}"]`);
+                const value = input.value.trim();
+                let errore = false;
 
-                    if (campo.select && value === "") {
+                if (label) label.classList.remove("errore");
+
+                if (campo.select && value === "") {
+                    errore = true;
+                    messaggi.push("Seleziona un argomento.");
+                } else if (campo.email) {
+                    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!re.test(value)) {
                         errore = true;
-                    } else if (campo.email) {
-                        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                        errore = !re.test(value);
-                    } else {
-                        errore = value.length < campo.min || value.length > campo.max;
+                        messaggi.push("Inserisci una email valida.");
+                    } else if (value.length < campo.min || value.length > campo.max) {
+                        errore = true;
+                        messaggi.push("L'email deve essere lunga tra " + campo.min + " e " + campo.max + " caratteri.");
                     }
-
-                    if (errore) {
-                        if (label) label.classList.add("errore");
-                        valido = false;
+                } else if (!campo.select) {
+                    if (value.length < campo.min || value.length > campo.max) {
+                        errore = true;
+                        messaggi.push(campo.label + " deve essere lungo tra " + campo.min + " e " + campo.max + " caratteri.");
                     }
                 }
 
-                if (!valido) {
-                    e.preventDefault();
-                    alert("Compila correttamente tutti i campi obbligatori.");
+                if (errore) {
+                    if (label) label.classList.add("errore");
+                    valido = false;
                 }
-            });
+            }
+
+            if (!valido) {
+                e.preventDefault();
+                alert(messaggi.join("\n"));
+            }
         });
+    });
     </script>
 
     <!-- Alert di conferma dopo invio riuscito -->
@@ -254,5 +247,4 @@ echo head('contatti', $arrCss);
         </script>
     <?php endif; ?>
 </body>
-
 </html>

@@ -96,7 +96,6 @@ function stampaFormUtente($utente = null)
  * @return string Script JS
  */
 
-
 function validazioneJSUtente()
 {
     return '
@@ -144,7 +143,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //  CLIENTI / LOGIN //
 
-
 /**
  * Stampa il form per aggiungere o modificare un cliente (login).
  * @param array|null $cliente Dati del cliente (null per nuovo)
@@ -168,7 +166,7 @@ function stampaFormCliente($cliente = null)
         <input type="password" name="password" id="gestPassword" placeholder="' . $placeholder . '" ' . $required . '>
         <button type="submit" name="salva">' . $btn . '</button>';
     if ($isMod) {
-        $html .= '<a href="login.php">Annulla</a>';
+        $html .= '<a href="dashboard.php">Annulla</a>';
     }
     $html .= '</form>';
     return $html;
@@ -333,7 +331,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // LAVORI //
 
 /**
- * Stampa il form per aggiungere o modificare un lavoro.
+ * Stampa il form per aggiungere o modificare un lavoro con upload file.
  * @param array $categorie Elenco categorie disponibili
  * @param array|null $lavoro Dati del lavoro (null per nuovo)
  * @return string HTML del form
@@ -352,24 +350,117 @@ function stampaFormLavoro($categorie, $lavoro = null)
     $categoria_id = $lavoro['categoria_id'] ?? '';
 
     $html = "<h3>" . ($isMod ? 'Modifica Lavoro' : 'Aggiungi Nuovo Lavoro') . "</h3>
-    <form method='POST' action='$action' id='formLavoro'>
+    <form method='POST' action='$action' id='formLavoro' enctype='multipart/form-data'>
         " . ($isMod ? "<input type='hidden' name='id' value='$id'>" : '') . "
-        <label for='titolo'>Titolo:</label><input type='text' name='titolo' id='titolo' value='$titolo' required><br>
-        <label for='img'>Immagine:</label><input type='text' name='img' id='img' value='$img' required><br>
-        <label for='description'>Descrizione:</label><textarea name='description' id='description' rows='3'>$descrizione</textarea><br>
-        <label for='data'>Data:</label><input type='text' name='data' id='data' value='$data'><br>
-        <label for='azienda'>Azienda:</label><input type='text' name='azienda' id='azienda' value='$azienda'><br>
+        
+        <label for='titolo'>Titolo:</label>
+        <input type='text' name='titolo' id='titolo' value='$titolo' required><br>
+        
+        <label for='img'>Immagine:</label>";
+
+    if ($isMod && $img) {
+        $html .= "<br><small>Immagine attuale: <strong>$img</strong></small><br>
+                  <input type='file' name='img' id='img' accept='image/*'><br>
+                  <small>Lascia vuoto per mantenere l'immagine attuale</small><br>";
+    } else {
+        $html .= "<input type='file' name='img' id='img' accept='image/*' required><br>";
+    }
+
+    $html .= "
+        <label for='description'>Descrizione:</label>
+        <textarea name='description' id='description' rows='3'>$descrizione</textarea><br>
+        
+        <label for='data'>Data:</label>
+        <input type='text' name='data' id='data' value='$data' placeholder='YYYY-MM-DD'><br>
+        
+        <label for='azienda'>Azienda:</label>
+        <input type='text' name='azienda' id='azienda' value='$azienda'><br>
+        
         <label for='categoria_id'>Categoria:</label>
         <select name='categoria_id' id='categoria_id' required>
             <option value=''>-- Seleziona Categoria --</option>";
+
     foreach ($categorie as $c) {
         $sel = ($c['id'] == $categoria_id) ? 'selected' : '';
         $html .= "<option value='{$c['id']}' $sel>" . htmlspecialchars($c['nome']) . "</option>";
     }
+
     $html .= "</select><br>
         <button type='submit'>" . ($isMod ? 'Salva Modifiche' : 'Aggiungi') . "</button>
     </form>";
+
     return $html;
+}
+
+/**
+ * Gestisce l'upload del file immagine per i lavori.
+ * @param array $file File da $_FILES
+ * @param string $vecchiaImmagine Nome del file precedente (per modifica)
+ * @return array Array con 'successo' (bool) e 'messaggio' (string) e 'nomeFile' (string)
+ */
+
+function gestisciUploadImmagine($file, $vecchiaImmagine = '')
+{
+    $risultato = ['successo' => false, 'messaggio' => '', 'nomeFile' => ''];
+
+    // Se non è stato caricato nessun file //
+    if (!isset($file['error']) || $file['error'] === UPLOAD_ERR_NO_FILE) {
+        if ($vecchiaImmagine) {
+            // In modifica, mantieni la vecchia immagine //
+            $risultato['successo'] = true;
+            $risultato['nomeFile'] = $vecchiaImmagine;
+            $risultato['messaggio'] = 'Mantenuta immagine precedente';
+        } else {
+            $risultato['messaggio'] = 'Nessun file caricato';
+        }
+        return $risultato;
+    }
+
+    // Controlla se ci sono errori nell'upload //
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        $risultato['messaggio'] = 'Errore nel caricamento del file';
+        return $risultato;
+    }
+
+    // Controlla la dimensione (max 5MB) //
+    if ($file['size'] > 5 * 1024 * 1024) {
+        $risultato['messaggio'] = 'File troppo grande (max 5MB)';
+        return $risultato;
+    }
+
+    // Controlla il tipo di file //
+    $tipiConsentiti = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!in_array($file['type'], $tipiConsentiti)) {
+        $risultato['messaggio'] = 'Tipo di file non consentito (solo JPG, PNG, GIF, WEBP)';
+        return $risultato;
+    }
+
+    // Genera un nome sicuro per il file //
+    $estensione = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $nomeFile = uniqid('img_') . '.' . strtolower($estensione);
+
+    // Cartella di destinazione //
+    $cartellaDestinazione = '../img/';
+    if (!is_dir($cartellaDestinazione)) {
+        mkdir($cartellaDestinazione, 0755, true);
+    }
+
+    $percorsoCompleto = $cartellaDestinazione . $nomeFile;
+
+    // Sposta il file //
+    if (move_uploaded_file($file['tmp_name'], $percorsoCompleto)) {
+        if ($vecchiaImmagine && $vecchiaImmagine !== $nomeFile && file_exists($cartellaDestinazione . $vecchiaImmagine)) {
+            unlink($cartellaDestinazione . $vecchiaImmagine);
+        }
+
+        $risultato['successo'] = true;
+        $risultato['nomeFile'] = $nomeFile;
+        $risultato['messaggio'] = 'File caricato con successo';
+    } else {
+        $risultato['messaggio'] = 'Errore nello spostamento del file';
+    }
+
+    return $risultato;
 }
 
 /**
@@ -381,12 +472,12 @@ function stampaFormLavoro($categorie, $lavoro = null)
 function stampaTabellaLavori($conn)
 {
     $html = '<table>
-        <thead><tr><th>ID</th><th>Titolo</th><th>Immagine</th><th>Descrizione</th><th>Data</th><th>Azienda</th><th>Categoria</th><th>Azioni</th></tr></thead><tbody>';
+        <thead><tr><th>ID</th><th>Titolo</th><th>Immagine</th><th>ALT</th><th>Descrizione</th><th>Data</th><th>Azienda</th><th>Categoria</th><th>Azioni</th></tr></thead><tbody>';
     $res = $conn->query("SELECT lavori.*, categorie.nome AS nome_categoria 
                          FROM lavori LEFT JOIN categorie ON lavori.categoria_id = categorie.id 
                          ORDER BY lavori.id ASC");
     if (!$res) {
-        $html .= "<tr><td colspan='8'>Errore nella query: " . htmlspecialchars($conn->error) . "</td></tr></tbody></table>";
+        $html .= "<tr><td colspan='9'>Errore nella query: " . htmlspecialchars($conn->error) . "</td></tr></tbody></table>";
         return $html;
     }
     while ($row = $res->fetch_assoc()) {
@@ -394,6 +485,7 @@ function stampaTabellaLavori($conn)
             <td>{$row['id']}</td>
             <td>" . htmlspecialchars($row['titolo']) . "</td>
             <td><img src=\"../img/{$row['img']}\" style='max-height:60px;'></td>
+            <td>" . htmlspecialchars($row['ALT'] ?? '') . "</td>
             <td>" . htmlspecialchars($row['description']) . "</td>
             <td>" . htmlspecialchars($row['data']) . "</td>
             <td>" . htmlspecialchars($row['azienda']) . "</td>
@@ -409,7 +501,7 @@ function stampaTabellaLavori($conn)
 }
 
 /**
- * Script JS per la validazione lato client del form lavoro.
+ * Script JS per la validazione lato client del form lavoro con upload.
  * @return string Script JS
  */
 
@@ -422,22 +514,43 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!form) return;
     form.addEventListener("submit", function (e) {
         const titolo = form.titolo.value.trim();
-        const img = form.img.value.trim();
+        const fileInput = form.img;
+        // ← RIMOSSO: const alt = form.alt.value.trim();
         const descrizione = form.description.value.trim();
         const data = form.data.value.trim();
         const azienda = form.azienda.value.trim();
         const categoria = form.categoria_id.value;
+        const isModifica = form.querySelector("input[name=\'id\']") !== null;
 
         if (titolo.length < 3 || titolo.length > 100) {
             alert("Il titolo deve essere tra 3 e 100 caratteri.");
             e.preventDefault();
             return;
         }
-        if (!/\.(jpg|jpeg|png|gif)$/i.test(img)) {
-            alert("L\'immagine deve essere un file JPG, JPEG, PNG o GIF.");
+        
+        // Controlla file solo se è obbligatorio (nuovo inserimento)
+        if (!isModifica && fileInput.files.length === 0) {
+            alert("Seleziona un\'immagine.");
             e.preventDefault();
             return;
         }
+        
+        // Se è stato selezionato un file, controlla il tipo
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const tipiConsentiti = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+            if (!tipiConsentiti.includes(file.type)) {
+                alert("Seleziona un\'immagine valida (JPG, PNG, GIF, WEBP).");
+                e.preventDefault();
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                alert("L\'immagine non può superare i 5MB.");
+                e.preventDefault();
+                return;
+            }
+        }
+        
         if (descrizione.length < 10) {
             alert("La descrizione deve essere di almeno 10 caratteri.");
             e.preventDefault();
